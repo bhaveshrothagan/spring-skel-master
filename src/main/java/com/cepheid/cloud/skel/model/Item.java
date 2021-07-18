@@ -2,7 +2,10 @@ package com.cepheid.cloud.skel.model;
 
 import io.swagger.annotations.ApiModel;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +28,7 @@ public class Item extends AbstractEntity {
 
     public List<Description> getDescription() {
         if (description == null) {
-            return new ArrayList<Description>();
+            return new ArrayList<>();
         }
         return description;
     }

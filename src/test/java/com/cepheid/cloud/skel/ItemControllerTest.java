@@ -6,7 +6,6 @@ import com.cepheid.cloud.skel.model.Item;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import net.minidev.json.parser.JSONParser;
-import net.minidev.json.parser.ParseException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -20,8 +19,10 @@ import java.util.Collection;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 public class ItemControllerTest extends TestBase {
@@ -29,11 +30,10 @@ public class ItemControllerTest extends TestBase {
     JSONParser parser = new JSONParser();
 
     @Test
-    public void testGetItems() throws Exception {
+    public void testGetItems() {
         Builder itemController = getBuilder("/app/api/1.0/items");
 
-        Collection<Item> items = itemController.get(new GenericType<Collection<Item>>() {
-        });
+        Collection<Item> items = itemController.get(new GenericType<Collection<Item>>() {});
         List<Item> itemList = new ArrayList<>(items);
         assertEquals(4, items.size());
         assertEquals(Long.valueOf(1L), itemList.get(0).getId());
@@ -50,7 +50,7 @@ public class ItemControllerTest extends TestBase {
 
     @Test
     public void testGetItemById() throws Exception {
-        Builder itemController = getBuilder("/app/api/1.0/items/1", "");
+        Builder itemController = getBuilder("/app/api/1.0/items/1");
 
         Response response = itemController.get();
         int status = response.getStatus();
@@ -66,7 +66,7 @@ public class ItemControllerTest extends TestBase {
 
     @Test
     public void testGetItemByInvalidId() throws Exception {
-        Builder itemController = getBuilder("/app/api/1.0/items/-1", "");
+        Builder itemController = getBuilder("/app/api/1.0/items/-1");
         Response response = itemController.get();
         int status = response.getStatus();
         String httpEntity = response.readEntity(String.class);
@@ -76,7 +76,7 @@ public class ItemControllerTest extends TestBase {
     }
 
     @Test
-    public void testGetItemsByDescriptionName() throws Exception {
+    public void testGetItemsByDescriptionName() {
         Builder itemController = getBuilder("/app/api/1.0/items/description?name=test");
 
         Collection<Item> items = itemController.get(new GenericType<Collection<Item>>() {
@@ -89,7 +89,7 @@ public class ItemControllerTest extends TestBase {
         Item i = new Item();
         i.setName("test1");
 
-        Builder itemController = getBuilder("/app/api/1.0/items/", "");
+        Builder itemController = getBuilder("/app/api/1.0/items/");
         Response response = itemController.post(Entity.json(i));
         int status = response.getStatus();
         String httpEntity = response.readEntity(String.class);
@@ -101,7 +101,7 @@ public class ItemControllerTest extends TestBase {
     @Test
     public void testInsertItemThrowException() throws Exception {
 
-        Builder itemController = getBuilder("/app/api/1.0/items/", "");
+        Builder itemController = getBuilder("/app/api/1.0/items/");
         Response response = itemController.post(Entity.json(null));
         int status = response.getStatus();
         System.out.println(response.getStatus());
@@ -167,7 +167,7 @@ public class ItemControllerTest extends TestBase {
 
     @Test
     public void testDeleteItem() throws Exception {
-        Builder itemController = getBuilder("/app/api/1.0/items/1", "");
+        Builder itemController = getBuilder("/app/api/1.0/items/1");
 
         Response response = itemController.delete();
         int status = response.getStatus();
@@ -178,8 +178,8 @@ public class ItemControllerTest extends TestBase {
     }
 
     @Test
-    public void testInvalidDeleteItem() throws Exception {
-        Builder itemController = getBuilder("/app/api/1.0/items/test", "");
+    public void testInvalidDeleteItem() {
+        Builder itemController = getBuilder("/app/api/1.0/items/test");
 
         Response response = itemController.delete();
         int status = response.getStatus();
@@ -188,7 +188,7 @@ public class ItemControllerTest extends TestBase {
 
     @Test
     public void testDeleteItemThrowException() throws Exception {
-        Builder itemController = getBuilder("/app/api/1.0/items/-1", "");
+        Builder itemController = getBuilder("/app/api/1.0/items/-1");
 
         Response response = itemController.delete();
         int status = response.getStatus();

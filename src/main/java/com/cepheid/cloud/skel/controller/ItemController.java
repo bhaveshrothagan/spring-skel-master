@@ -2,7 +2,11 @@ package com.cepheid.cloud.skel.controller;
 
 import com.cepheid.cloud.skel.model.Item;
 import com.cepheid.cloud.skel.repository.ItemRepository;
-import io.swagger.annotations.*;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -10,7 +14,15 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,7 +33,7 @@ import java.util.Optional;
 
 @Component
 @Path("/api/1.0/items")
-@Api(value = "Item", description = "Operations pertaining to Item", tags = {"Item"})
+@Api(value = "Operations pertaining to Item", tags = {"Item"})
 public class ItemController {
 
     private final ItemRepository mItemRepository;
@@ -45,7 +57,7 @@ public class ItemController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return new ArrayList<>();
     }
 
     @GET
@@ -74,7 +86,7 @@ public class ItemController {
             @ApiResponse(code = 500, message = "Internal Error"),
             @ApiResponse(code = 404, message = "Not found"),
             @ApiResponse(code = 200, message = "Successful retrieval", response = Item.class)})
-    public Collection<Item> getItemsByDescriptionName(@ApiParam(value = "name", required = true, defaultValue = "") @QueryParam("name") String descriptionName) {
+    public Collection<Item> getItemsByDescriptionName(@ApiParam(value = "name", required = true) @QueryParam("name") String descriptionName) {
         List<Item> items = new ArrayList<>();
         mItemRepository.findAll().forEach(i -> i.getDescription().forEach(d -> {
             if (d.getName().equalsIgnoreCase(descriptionName)) {
@@ -93,9 +105,8 @@ public class ItemController {
             @ApiResponse(code = 200, message = "Successful retrieval", response = String.class)})
     public ResponseEntity<String> insertItem(@RequestBody Item item) {
         try {
-            if (mItemRepository.save(item) != null) {
-                return ResponseEntity.ok().body("Item added successfully");
-            }
+            mItemRepository.save(item);
+            return ResponseEntity.ok().body("Item added successfully");
         } catch (Exception e) {
             e.printStackTrace(); }
         return ResponseEntity.ok().body("Error occurred");
