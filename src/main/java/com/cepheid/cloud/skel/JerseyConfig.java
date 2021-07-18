@@ -27,8 +27,7 @@ public class JerseyConfig extends ResourceConfig {
     configureSwagger();    
     
   }
-  
-  
+
   private BeanConfig configureSwagger() {
     // support Swagger
     register(ApiListingResource.class);

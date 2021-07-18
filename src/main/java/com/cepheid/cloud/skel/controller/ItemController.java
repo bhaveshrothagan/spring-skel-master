@@ -17,7 +17,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-
 // curl http:/localhost:9443/app/api/1.0/items
 
 @Component

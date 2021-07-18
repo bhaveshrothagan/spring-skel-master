@@ -15,7 +15,6 @@ public class Item extends AbstractEntity {
     @OneToMany(fetch = FetchType.EAGER, targetEntity = Description.class, cascade = CascadeType.ALL)
     private List<Description> description;
 
-
     public String getName() {
         return name;
     }

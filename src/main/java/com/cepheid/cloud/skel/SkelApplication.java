@@ -20,16 +20,17 @@ public class SkelApplication {
     SpringApplication.run(SkelApplication.class, args);
   }
 
-  @Bean
-  ApplicationRunner initItems(ItemRepository repository) {
-    return args -> {
-      Stream.of("Lord of the rings", "Hobbit", "Silmarillion", "Unfinished Tales and The History of Middle-earth")
-          .forEach(name -> {
-            Item item = new Item();
-            repository.save(item);
-          });
-      repository.findAll().forEach(System.out::println);
-    };
-  }
+    @Bean
+    ApplicationRunner initItems(ItemRepository repository) {
+        return args -> {
+            Stream.of("Lord of the rings", "Hobbit", "Silmarillion", "Unfinished Tales and The History of Middle-earth")
+                    .forEach(name -> {
+                        Item item = new Item();
+                        item.setName(name);
+                        repository.save(item);
+                    });
+            repository.findAll().forEach(System.out::println);
+        };
+    }
 
 }
