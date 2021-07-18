@@ -4,54 +4,64 @@
 
 This project contains an unfinished implementation of a simple repository for Items.
 
+The Project consist of 6 REST APIs:
 
-### Application structure ###
+1. List All items with id, name and description details
 
-The application is implemented as a Spring Boot application using an in memory H2 Database Engine to store the data. 
+curl -X GET \
+  http://localhost:9443/app/api/1.0/items \
+  -H 'cache-control: no-cache' \
+  -H 'postman-token: 7a88abad-5eae-16f2-8697-3610353c8bf3'
+  
+ 2. List Item Detail based on id
+ 3. 
+ curl -X GET \
+  http://localhost:9443/app/api/1.0/items/1 \
+  -H 'cache-control: no-cache' \
+  -H 'postman-token: 0e163d68-7064-e757-5eae-b4284d570eae'
+  
+  3. List Items detail based on desciption Name
+  curl -X GET \
+  'http://localhost:9443/app/api/1.0/items/description?name=Noval' \
+  -H 'cache-control: no-cache' \
+  -H 'postman-token: 732c0476-be9f-e3e4-984b-e0b57bf6d2ff'
+  
+  4. Add New item to the List
+  
+  curl -X POST \
+  http://localhost:9443/app/api/1.0/items \
+  -H 'accept: application/json' \
+  -H 'cache-control: no-cache' \
+  -H 'content-type: application/json' \
+  -H 'postman-token: ccda8263-4685-712d-4ff6-320ab6c22728' \
+  -d '{
+	"name": "New Item added"
+}'
 
-The application is structured in a controller package with an ItemController that exposes a REST endpoint with one GET Items method. A model package with the data model. This data model currently only contains one entity Item. A repository package with an ItemRepository to access the database.
+5. Update Item based on Item id
 
-The main class in the application is com.cepheid.cloud.skel.SkelApplication. Running this class will start the application and insert four empty Item entities into the database.
+curl -X PUT \
+  http://localhost:9443/app/api/1.0/items/1 \
+  -H 'accept: application/json' \
+  -H 'cache-control: no-cache' \
+  -H 'content-type: application/json' \
+  -H 'postman-token: 1f7c4785-f85d-8488-64ee-e20e844efe12' \
+  -d '{
+	"description":[
+		{
+			"name":"Noval"
+		},
+		{
+			"name":"Highyly fantastic"
+		}
+		]
+}'
 
-There is also one unfinished JUnit test in com.cepheid.cloud.skel.ItemControllerTest
+6. Delete Item based on item id
 
-### Task ###
-
-Your task is to "complete" the implementation. At a very minimum you need to implement the following:
-
-* Add some attributes to the Item class. Item must have a state that can have one of these three values (undefined, valid, invalid).
-* Create a new entity class Description, and setup a one to many relation between Item and Description. I.e. an Item has many Descriptions.
-* Add Item CRUD methods to the controller.
-* Add methods to the controller to query for specific Items based on it's attributes.
-* Add something of your own choice that uses something from the Spring framework or demonstrates some Object-Oriented Programming Concepts. 
-* Add Unit Test cases with good coverage.  
-
-Whatever code you produce, at the end of this exercise it should be of production quality, compile and run even if functionality is not complete.
-
-### Installation ###
-
-Clone or download the repository from https://github.com/rxdevcepheid/spring-skel
-
-The project is prepared to be used with Gradle and Eclipse IDE. (Gradle plugin buildship is by default included in Eclipse). You can of course use any other IDE if you like.
-
-Project is configured to use JavaSE-11. But it works with JavaSE-1.8 or greater, so you can either install Java 11 or change the project settings to your existing version of Java.
-
-Project is tested using Eclipse 2018-12 (seems to be some problem when using Eclipse 2019). https://www.eclipse.org/eclipseide/2018-12/
-
-This is how you import the project into Eclipse:
-
-1. Choose File->Import..., select Existing Gradle Project.
-1. Set Project root directory to where you cloned the repository.
-1. Import Options, choose Gradle Wrapper.
-
-
-### Starting application/ Run Tests ###
-
-Right click on com.cepheid.cloud.skel.SkelApplication and select Run As -> Java Application
-Right click on com.cepheid.cloud.skel.ItemControllerTest and select Run As -> JUnit Test
-
-### Useful Links ###
-
-* https://spring.io/projects/spring-boot
-* https://docs.spring.io/spring-data/jpa/docs/current/reference/html/
-* https://www.h2database.com/html/main.html
+curl -X DELETE \
+  http://localhost:9443/app/api/1.0/items/2 \
+  -H 'accept: application/json' \
+  -H 'cache-control: no-cache' \
+  -H 'content-type: application/json' \
+  -H 'postman-token: 5dff7264-9d63-705f-e949-4d7399c31a31'
