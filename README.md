@@ -12,15 +12,16 @@ curl -X GET \
   http://localhost:9443/app/api/1.0/items \
   -H 'cache-control: no-cache' \
   -H 'postman-token: 7a88abad-5eae-16f2-8697-3610353c8bf3'
-  
+
  2. List Item Detail based on id
- 3. 
+ 
  curl -X GET \
   http://localhost:9443/app/api/1.0/items/1 \
   -H 'cache-control: no-cache' \
   -H 'postman-token: 0e163d68-7064-e757-5eae-b4284d570eae'
   
   3. List Items detail based on desciption Name
+  
   curl -X GET \
   'http://localhost:9443/app/api/1.0/items/description?name=Noval' \
   -H 'cache-control: no-cache' \
